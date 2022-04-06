@@ -1,0 +1,112 @@
+
+GccApplication1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000d6  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000012a  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  0000012a  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000015c  2**2
+                  CONTENTS, READONLY
+  4 .debug_info   0000052e  00000000  00000000  00000198  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000004e7  00000000  00000000  000006c6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   00000115  00000000  00000000  00000bad  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    000001af  00000000  00000000  00000cc2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 36 00 	jmp	0x6c	; 0x6c <__ctors_end>
+   4:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+   8:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+   c:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  10:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  14:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  18:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  1c:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  20:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  24:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  28:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  2c:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  30:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  34:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  38:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  3c:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  40:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  44:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  48:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  4c:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+  50:	0c 94 40 00 	jmp	0x80	; 0x80 <__bad_interrupt>
+
+00000054 <String>:
+  54:	48 65 6c 6c 6f 20 50 69 6e 62 6f 61 72 64 20 55     Hello Pinboard U
+  64:	73 65 72 21 21 21 00 00                             ser!!!..
+
+0000006c <__ctors_end>:
+  6c:	11 24       	eor	r1, r1
+  6e:	1f be       	out	0x3f, r1	; 63
+  70:	cf e5       	ldi	r28, 0x5F	; 95
+  72:	d4 e0       	ldi	r29, 0x04	; 4
+  74:	de bf       	out	0x3e, r29	; 62
+  76:	cd bf       	out	0x3d, r28	; 61
+  78:	0e 94 57 00 	call	0xae	; 0xae <main>
+  7c:	0c 94 69 00 	jmp	0xd2	; 0xd2 <_exit>
+
+00000080 <__bad_interrupt>:
+  80:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000084 <SendByte>:
+  84:	5d 9b       	sbis	0x0b, 5	; 11
+  86:	fe cf       	rjmp	.-4      	; 0x84 <SendByte>
+  88:	8c b9       	out	0x0c, r24	; 12
+  8a:	08 95       	ret
+
+0000008c <SendStr>:
+  8c:	cf 93       	push	r28
+  8e:	df 93       	push	r29
+  90:	ec 01       	movw	r28, r24
+  92:	fe 01       	movw	r30, r28
+  94:	84 91       	lpm	r24, Z
+  96:	88 23       	and	r24, r24
+  98:	39 f0       	breq	.+14     	; 0xa8 <SendStr+0x1c>
+  9a:	fe 01       	movw	r30, r28
+  9c:	84 91       	lpm	r24, Z
+  9e:	90 e0       	ldi	r25, 0x00	; 0
+  a0:	0e 94 42 00 	call	0x84	; 0x84 <SendByte>
+  a4:	24 96       	adiw	r28, 0x04	; 4
+  a6:	f5 cf       	rjmp	.-22     	; 0x92 <SendStr+0x6>
+  a8:	df 91       	pop	r29
+  aa:	cf 91       	pop	r28
+  ac:	08 95       	ret
+
+000000ae <main>:
+  ae:	83 e3       	ldi	r24, 0x33	; 51
+  b0:	89 b9       	out	0x09, r24	; 9
+  b2:	10 bc       	out	0x20, r1	; 32
+  b4:	1b b8       	out	0x0b, r1	; 11
+  b6:	88 e1       	ldi	r24, 0x18	; 24
+  b8:	8a b9       	out	0x0a, r24	; 10
+  ba:	86 e8       	ldi	r24, 0x86	; 134
+  bc:	80 bd       	out	0x20, r24	; 32
+  be:	85 b7       	in	r24, 0x35	; 53
+  c0:	81 60       	ori	r24, 0x01	; 1
+  c2:	85 bf       	out	0x35, r24	; 53
+  c4:	78 94       	sei
+  c6:	c0 9a       	sbi	0x18, 0	; 24
+  c8:	84 e5       	ldi	r24, 0x54	; 84
+  ca:	90 e0       	ldi	r25, 0x00	; 0
+  cc:	0e 94 46 00 	call	0x8c	; 0x8c <SendStr>
+  d0:	fa cf       	rjmp	.-12     	; 0xc6 <main+0x18>
+
+000000d2 <_exit>:
+  d2:	f8 94       	cli
+
+000000d4 <__stop_program>:
+  d4:	ff cf       	rjmp	.-2      	; 0xd4 <__stop_program>
